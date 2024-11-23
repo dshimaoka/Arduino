@@ -17,6 +17,7 @@ const int LED1OutPin = 8;//9;       // pin for LED1's Gate1
 const int LED2OutPin = 9;//4;       // pin for LED2's Gate1
 const int poissonPin = 10;          //pin for "flipper"
 const int bklightPin = 11; //pin for backlight & laser control 23/4/20
+const int laserPin =13; //invert of bklightPin (= PCObusyPin)
 
 const int minPoissonDur = 10; //ms
 const int maxPoissonDur = 200; //ms
@@ -49,6 +50,8 @@ void setup() {
   pinMode(acqLiveInPin, INPUT);
   pinMode(bklightPin, OUTPUT);
   digitalWrite(bklightPin, LOW);
+  pinMode(laserPin, OUTPUT);
+  digitalWrite(laserPin, HIGH);
   pinMode(extraGndPin, OUTPUT);
   digitalWrite(extraGndPin, LOW);
 
@@ -80,6 +83,8 @@ void loop() {
     currentPCObusystate = digitalRead(PCObusyPin);
     if (currentPCObusystate == HIGH & lastPCObusystate == LOW) {
         digitalWrite(bklightPin, LOW);
+        digitalWrite(laserPin, HIGH);
+
       flipflopState = (flipflopState + 1) % 2;
 
       if (flipflopState == 0) {
@@ -93,6 +98,8 @@ void loop() {
     } else if (currentPCObusystate == LOW & lastPCObusystate == HIGH) {
     // code for backlight
       digitalWrite(bklightPin, HIGH); //24/4/20
+           digitalWrite(laserPin, LOW); //24/4/20
+ 
     // needs fixing. when camera is not plugged, this condition is not evoked
 
       // turn off LEDs when screen is ON (not necessary but nicer)
