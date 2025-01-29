@@ -5,8 +5,17 @@
 const boolean polarity = 1; //1: spark = HIGH, 0:spark = LOW
 const boolean detectEdge = 0; //1:detect rising edge, 0:detect falling edge
 
-volatile unsigned int sparkDelayTime = 0;   // microseconds. max 1024000 (=1.024s)
-volatile unsigned int sparkOnTime = 9000;     // microseconds. max 1024000 (=1.024s)
+// camera parameter
+const unsigned int nRows = 900;
+const unsigned int exposureTime = 10; //[ms]
+const unsigned int busyTime = 1000; //[us] guess!
+const unsigned int lineTime = 12.136; //[us] fixed
+
+// timeline parameter
+const unsigned int frameRate = 30; //[Hz]
+
+volatile unsigned int sparkDelayTime = nRows*lineTime;   // microseconds. min ~100 max 1024000 (=1.024s)
+volatile unsigned int sparkOnTime = ceil(1e6/frameRate) - 1e3*exposureTime - sparkDelayTime - busyTime;     // microseconds. max 1024000 (=1.024s)
 
 const byte FIRE_SENSOR = 2;  // this port corresponds to interrupt 0 (for INT0_vect)
 const byte SPARKPLUG = 9;
