@@ -1,4 +1,5 @@
 // created from ignite_wDelay_allOpt
+// http://www.gammon.com.au/interrupts
 
 #include "digitalWriteFast.h"
 
@@ -19,6 +20,7 @@ volatile unsigned int sparkOnTime = ceil(1e6/frameRate) - 1e3*exposureTime - spa
 
 const byte FIRE_SENSOR = 2;  // this port corresponds to interrupt 0 (for INT0_vect)
 const byte SPARKPLUG = 9;
+const byte SPARKPLUG_FLIP = 10;
 
 // allow for time taken to enter ISR (determine empirically)
 const unsigned int isrDelayFactor = 4;        // microseconds
@@ -76,6 +78,7 @@ void setup()
   }
 
   pinMode (SPARKPLUG, OUTPUT);
+  pinMode (SPARKPLUG_FLIP, OUTPUT);
   pinMode (FIRE_SENSOR, INPUT_PULLUP);
 
   activateInterrupt0 ();
@@ -150,10 +153,12 @@ ISR (TIMER1_COMPA_vect)
     if (polarity)
     {
       digitalWriteFast (SPARKPLUG, HIGH);
+      digitalWriteFast (SPARKPLUG_FLIP, LOW);
     }
     else
     {
       digitalWriteFast (SPARKPLUG, LOW);
+      digitalWriteFast (SPARKPLUG_FLIP, HIGH);
     }
     TCCR1B = 0;                         // stop timer
     TCNT1 = 0;                          // count back to zero
@@ -180,10 +185,12 @@ ISR (TIMER1_COMPA_vect)
     if (polarity)
     {
       digitalWriteFast (SPARKPLUG, LOW);
+      digitalWriteFast (SPARKPLUG_FLIP, HIGH);
     }
     else
     {
       digitalWriteFast (SPARKPLUG, HIGH);
+      digitalWriteFast (SPARKPLUG_FLIP, LOW);
     }
     TCCR1B = 0;                         // stop timer
     TIMSK1 = 0;                         // cancel timer interrupt
