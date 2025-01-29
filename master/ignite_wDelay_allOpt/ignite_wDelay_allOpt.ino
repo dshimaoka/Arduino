@@ -1,5 +1,6 @@
-// created from ignite_wDelay_allOpt
+// created from ignite_wDelay_photostim.ino
 // http://www.gammon.com.au/interrupts
+// TODO: use direct port manipuation instead of digitalWriteFast
 
 #include "digitalWriteFast.h"
 
