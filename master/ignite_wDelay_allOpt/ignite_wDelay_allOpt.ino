@@ -2,7 +2,7 @@
 
 #include "digitalWriteFast.h"
 
-const boolean polarity = 1; //1: spark = HIGH, 0:spark = LOW
+const boolean polarity = 0; //1: spark = HIGH, 0:spark = LOW
 const boolean detectEdge = 0; //1:detect rising edge, 0:detect falling edge
 
 // camera parameter
