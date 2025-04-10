@@ -1,5 +1,5 @@
 const bool debugMode = 0;  //1 to use simulated camera exposure and show outputs
-const bool acqLiveMode = 0; //1 to evoke this code only when acqLive signal is on, 0 to ignore acqLive signal
+const bool acqLiveMode = 1; //1 to evoke this code only when acqLive signal is on, 0 to ignore acqLive signal
 const int camrate = 2; //frame rate of camera [Hz] (used only in debugMode)
 const int duration = 1000 / camrate; //[ms]
 int tmod;
@@ -11,7 +11,7 @@ const int purpleOutPin = 9;//4;       // pin for purple's Gate1
 const int acqLiveInPin = 7;//5;       // pin for acqLive from Timeline
 const int extraGndPin = 1;       // pin for acqLive from Timeline
 
-const int poissonPin = 7;
+const int poissonPin = 11;
 const int minPoissonDur = 10; //ms
 const int maxPoissonDur = 200; //ms
 

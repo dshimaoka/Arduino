@@ -9,12 +9,12 @@ const boolean detectEdge = 0; //1:detect rising edge, 0:detect falling edge
 
 // camera parameter
 const unsigned int nRows = 900;
-const unsigned int exposureTime = 10; //[ms]
+const unsigned int exposureTime = 5; //[ms] 10
 const unsigned int busyTime = 1000; //[us] guess!
 const unsigned int lineTime = 12.136; //[us] fixed
 
 // timeline parameter
-const unsigned int frameRate = 30; //[Hz]
+const unsigned int frameRate = 30; //[Hz] 30
 
 volatile unsigned int sparkDelayTime = nRows*lineTime;   // microseconds. min ~100 max 1024000 (=1.024s)
 volatile unsigned int sparkOnTime = ceil(1e6/frameRate) - 1e3*exposureTime - sparkDelayTime - busyTime;     // microseconds. max 1024000 (=1.024s)
