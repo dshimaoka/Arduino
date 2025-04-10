@@ -4,9 +4,10 @@ const int camrate = 2; //frame rate of camera [Hz] (used only in debugMode)
 const int duration = 1000 / camrate; //[ms]
 int tmod;
 
-const int PCOinPin = 13;//2;    // pin for "all lines exposing" (0.0 on ardbox)
-const int blueOutPin = 6;//9;       // pin for blue's Gate1 (0.4 on ardbox)
-const int purpleOutPin = 9;//4;       // pin for purple's Gate1 (0.3 on ardbox)
+const int PCOinPin = 13;//2;    // pin for "all lines exposing" 
+const int copyPCOinPin = 12;//2;    // copy of PCOinPin
+const int blueOutPin = 6;//9;       // pin for blue's Gate1 
+const int purpleOutPin = 9;//4;       // pin for purple's Gate1 
 const int acqLiveInPin = 7;//5;       // pin for acqLive from Timeline
 const int extraGndPin = 1;       // pin for acqLive from Timeline
 
@@ -34,6 +35,7 @@ int currentPoissonState = 0;
 void setup() {
   // put your setup code here, to run once:
   pinMode(PCOinPin, INPUT);
+  pinMode(copyPCOinPin, OUTPUT);
   pinMode(blueOutPin, OUTPUT);
   pinMode(purpleOutPin, OUTPUT);
   pinMode(acqLiveInPin, INPUT);
@@ -87,6 +89,7 @@ void loop() {
   lastAcqLiveState = currentAcqLiveState;
 
   currentPCOstate = digitalRead(PCOinPin);
+  digitalWrite(copyPCOinPin, currentPCOstate);
 
   if (currentPCOstate == LOW & lastPCOstate == HIGH) {
     flipflopState = (flipflopState + 1) % 2;
