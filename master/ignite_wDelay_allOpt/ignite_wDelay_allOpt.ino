@@ -8,9 +8,9 @@ const boolean polarity = 0; //1: spark = HIGH, 0:spark = LOW
 const boolean detectEdge = 0; //1:detect rising edge, 0:detect falling edge
 
 // camera parameter
-const unsigned int nRows = 900;
 const unsigned int exposureTime = 5; //[ms] 10
-const unsigned int busyTime = 1000; //[us] guess!
+const unsigned int nRows = 0;//900;
+const unsigned int busyTime = 0;//1000; //[us] guess!
 const unsigned int lineTime = 12.136; //[us] fixed
 
 // timeline parameter
