@@ -121,8 +121,8 @@ void loop() {
   }
 
   // AND operation
-  digitalWrite(blueOutPin, currentBlueInternalState & currentPCOstate);
-  digitalWrite(purpleOutPin, currentPurpleInternalState & currentPCOstate);
+  digitalWrite(blueOutPin, currentBlueInternalState & currentPCOstate & currentAcqLiveState);
+  digitalWrite(purpleOutPin, currentPurpleInternalState & currentPCOstate & currentAcqLiveState);
 
   currentBlueOutState = digitalRead(blueOutPin);
   currentPurpleOutState = digitalRead(purpleOutPin);
