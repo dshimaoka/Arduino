@@ -8,16 +8,16 @@ const boolean polarity = 0; //1: spark = HIGH, 0:spark = LOW
 const boolean detectEdge = 0; //1:detect rising edge, 0:detect falling edge
 
 // camera parameter
+const unsigned int useStatusExpos = 0; //which pco output to use 1: statusExpos, 0: busy
 const unsigned int exposureTime = 4; //[ms] 10
-const unsigned int nRows = 0;//900;
-const unsigned int busyTime = 0;//1000; //[us] guess!
+const unsigned int nRows = 900;
+const unsigned int busyTime = 1000; //[us] guess!
 const unsigned int lineTime = 12.136; //[us] fixed
-
 // timeline parameter
 const unsigned int frameRate = 60; //[Hz] 30
 
-volatile unsigned int sparkDelayTime = nRows*lineTime;   // microseconds. min ~100 max 1024000 (=1.024s)
-volatile unsigned int sparkOnTime = ceil(1e6/frameRate) - 1e3*exposureTime - sparkDelayTime - busyTime;     // microseconds. max 1024000 (=1.024s)
+volatile unsigned int sparkDelayTime = 0; //will be defined in setup loop
+volatile unsigned int sparkOnTime = 0; //will be defined in setup loop
 
 const byte FIRE_SENSOR = 2;  // this port corresponds to interrupt 0 (for INT0_vect) "busy" signal from camera
 const byte SPARKPLUG = 9; // SPARK ON when none of camera line is NOT exposing
@@ -35,6 +35,15 @@ volatile unsigned int prescaler_duration;
 
 void setup()
 {
+  if (useStatusExpos == 0) { //use busy output from camera
+    sparkDelayTime = nRows*lineTime;   // microseconds. min ~100 max 1024000 (=1.024s)
+    sparkOnTime = ceil(1e6/frameRate) - 1e3*exposureTime - sparkDelayTime - busyTime;     // microseconds. max 1024000 (=1.024s)
+  }
+  else { //use statusExpos output from camera
+    sparkDelayTime = isrDelayFactor;
+    sparkOnTime = ceil(1e6/frameRate) - 1e3*exposureTime - nRows*lineTime;     // microseconds. max 1024000 (=1.024s)
+  }
+
   TCCR1A = 0;  // normal mode
   TCCR1B = 0;  // stop timer
   TIMSK1 = 0;  // cancel timer interrupt
