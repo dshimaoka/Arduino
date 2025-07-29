@@ -5,14 +5,14 @@
 #include "digitalWriteFast.h"
 
 const boolean polarity = 0; //1: spark = HIGH, 0:spark = LOW
-const boolean detectEdge = 0; //1:detect rising edge, 0:detect falling edge
+const boolean detectEdge = 1; //1:detect rising edge, 0:detect falling edge
 
 // camera parameter
-const unsigned int useStatusExpos = 0; //which pco output to use 1: statusExpos, 0: busy
+const unsigned int useStatusExpos = 1; //which pco output to use 1: statusExpos, 0: busy
 const unsigned int exposureTime = 4; //[ms] 10
 const unsigned int nRows = 900;
-const unsigned int busyTime = 1000; //[us] guess!
 const unsigned int lineTime = 12.136; //[us] fixed
+const unsigned int busyTime = 1000; //[us] guess!
 // timeline parameter
 const unsigned int frameRate = 60; //[Hz] 30
 
@@ -36,7 +36,7 @@ volatile unsigned int prescaler_duration;
 void setup()
 {
   if (useStatusExpos == 0) { //use busy output from camera
-    sparkDelayTime = nRows*lineTime;   // microseconds. min ~100 max 1024000 (=1.024s)
+    sparkDelayTime = 1e3*exposureTime + nRows*lineTime;   // microseconds. min ~100 max 1024000 (=1.024s)
     sparkOnTime = ceil(1e6/frameRate) - 1e3*exposureTime - sparkDelayTime - busyTime;     // microseconds. max 1024000 (=1.024s)
   }
   else { //use statusExpos output from camera
